@@ -10,12 +10,18 @@
         {
             this.Rows    = rows;
             this.Columns = columns;
-            Pieces = new Piece[rows, columns];
+            this.Pieces  = new Piece[rows, columns];
         }
 
         public Piece Piece(int row, int column)
         {
             return Pieces[row, column];
+        }
+
+        public void AddPiece(Piece p, Position x)
+        {
+            Pieces[x.Row, x.Column] = p;
+
         }
     }
 } 

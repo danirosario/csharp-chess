@@ -7,9 +7,9 @@
         public int AmountOfMoves { get; protected set; }
         public Board Board { get; protected set; }
 
-        public Piece(Position position, Board board, Color color)
+        public Piece(Board board, Color color)
         {
-            this.Position      = position;
+            this.Position      = null;
             this.Board         = board;
             this.Color         = color;
             this.AmountOfMoves = 0;
