@@ -4,7 +4,7 @@ namespace chess
 {
     internal class Pawn : Piece
     {
-        public Pawn(Board board, Color color) : base(board, color) { }
+        public Pawn(Board chessBoard, Color color) : base(chessBoard, color) { }
 
         public override string ToString()
         {

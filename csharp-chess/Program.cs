@@ -9,11 +9,9 @@ namespace csharp_chess
         {
             try
             {
-                var position = new ChessPosition('c', 7);
+                var match = new ChessMatch();
 
-                Console.WriteLine(position);
-
-                Console.WriteLine(position.ToPosition());
+                Screen.PrintBoard(match.Board);
             }
             catch (BoardException e)
             {

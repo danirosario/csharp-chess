@@ -4,7 +4,7 @@ namespace chess
 {
     internal class Queen : Piece
     {
-        public Queen(Board board, Color color) : base(board, color) { }
+        public Queen(Board chessBoard, Color color) : base(chessBoard, color) { }
 
         public override string ToString()
         {

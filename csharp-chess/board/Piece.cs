@@ -15,5 +15,10 @@
             this.AmountOfMoves = 0;
         }
 
+        public void IncreaseAmountOfMoves()
+        {
+            AmountOfMoves++;
+        }
+
     }
 }

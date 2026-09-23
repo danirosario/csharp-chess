@@ -4,7 +4,7 @@ namespace chess
 {
     internal class Rook : Piece
     {
-        public Rook(Board board, Color color) : base(board, color) { }
+        public Rook(Board chessBoard, Color color) : base(chessBoard, color) { }
 
         public override string ToString()
         {

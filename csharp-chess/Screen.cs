@@ -8,6 +8,7 @@ namespace csharp_chess
         {
             for (int i = 0; i < board.Rows; i++)
             {
+                Console.Write(8 - i + " ");
                 for (int j = 0; j < board.Columns; j++)
                 {
                     if (board.Piece(i,j) == null)
@@ -17,7 +18,7 @@ namespace csharp_chess
                     else
                     {
                         PrintPiece(board.Piece(i,j));
-                        Console.Write(' ');
+                        Console.Write(" ");
                     }
                 }
                 Console.WriteLine();

@@ -4,7 +4,7 @@ namespace chess
 {
     internal class Knigth : Piece
     {
-        public Knigth(Board board, Color color) : base(board, color) { }
+        public Knigth(Board chessBoard, Color color) : base(chessBoard, color) { }
 
         public override string ToString()
         {
