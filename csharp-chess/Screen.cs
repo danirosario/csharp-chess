@@ -1,6 +1,6 @@
 ﻿using board;
 
-namespace csharp_chess
+namespace chess
 {
     internal class Screen
     {
@@ -25,6 +25,14 @@ namespace csharp_chess
             }
 
             Console.WriteLine("  a b c d e f g h");
+        }
+
+        public static ChessPosition ReadChessPosition()
+        {
+            string s      = Console.ReadLine();
+            char   column = s[0];
+            int    row    = int.Parse(s[1] + "");
+            return new ChessPosition(column, row);
         }
 
         public static void PrintPiece(Piece piece)

@@ -1,7 +1,6 @@
 ﻿using board;
-using chess;
 
-namespace csharp_chess
+namespace chess
 {
     class Program
     {
@@ -11,7 +10,19 @@ namespace csharp_chess
             {
                 var match = new ChessMatch();
 
-                Screen.PrintBoard(match.Board);
+                while (!match.MatchFinished)
+                {
+                    Console.Clear();
+                    Screen.PrintBoard(match.Board);
+
+                    Console.Write("\nOrigem: ");
+                    Position origin = Screen.ReadChessPosition().ToPosition();
+                    Console.Write("Destino: ");
+                    Position destination = Screen.ReadChessPosition().ToPosition();
+
+                    match.ExecuteMove(origin, destination);
+                }
+
             }
             catch (BoardException e)
             {
