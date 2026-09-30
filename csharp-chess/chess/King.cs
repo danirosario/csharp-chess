@@ -14,7 +14,7 @@ namespace chess
         private bool CanMove(Position position)
         {
             Piece p = Board.Piece(position);
-            return p != null || p.Color != this.Color;
+            return p == null || p.Color != this.Color;
         }
 
         public override bool[,] PossibleMovements()
@@ -24,6 +24,7 @@ namespace chess
             Position position = new Position(0, 0);
 
             //acima
+            position.SetValues(Position.Row, Position.Column);
             position.SetValues(position.Row - 1, position.Column);
             if (Board.ValidePosition(position) && CanMove(position))
             {
@@ -31,6 +32,7 @@ namespace chess
             }
 
             //diagonal direita acima
+            position.SetValues(Position.Row, Position.Column);
             position.SetValues(position.Row - 1, position.Column + 1);
             if (Board.ValidePosition(position) && CanMove(position))
             {
@@ -38,6 +40,7 @@ namespace chess
             }
 
             //direita
+            position.SetValues(Position.Row, Position.Column);
             position.SetValues(position.Row, position.Column + 1);
             if (Board.ValidePosition(position) && CanMove(position))
             {
@@ -45,6 +48,7 @@ namespace chess
             }
 
             //diagonal direita abaixo
+            position.SetValues(Position.Row, Position.Column);
             position.SetValues(position.Row + 1, position.Column + 1);
             if (Board.ValidePosition(position) && CanMove(position))
             {
@@ -52,6 +56,7 @@ namespace chess
             }
 
             //abaixo
+            position.SetValues(Position.Row, Position.Column);
             position.SetValues(position.Row + 1, position.Column);
             if (Board.ValidePosition(position) && CanMove(position))
             {
@@ -59,6 +64,7 @@ namespace chess
             }
 
             //diagonal esquerda abaixo
+            position.SetValues(Position.Row, Position.Column);
             position.SetValues(position.Row + 1, position.Column - 1);
             if (Board.ValidePosition(position) && CanMove(position))
             {
@@ -66,6 +72,7 @@ namespace chess
             }
 
             //esquerda
+            position.SetValues(Position.Row, Position.Column);
             position.SetValues(position.Row, position.Column - 1);
             if (Board.ValidePosition(position) && CanMove(position))
             {
@@ -73,6 +80,7 @@ namespace chess
             }
 
             //diagonal esquerda acima
+            position.SetValues(Position.Row, Position.Column);
             position.SetValues(position.Row - 1, position.Column - 1);
             if (Board.ValidePosition(position) && CanMove(position))
             {

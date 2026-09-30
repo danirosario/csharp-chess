@@ -1,14 +1,14 @@
-﻿using board;
+﻿//using board;
 
-namespace chess
-{
-    internal class Pawn : Piece
-    {
-        public Pawn(Board chessBoard, Color color) : base(chessBoard, color) { }
+//namespace chess
+//{
+//    internal class Pawn : Piece
+//    {
+//        public Pawn(Board chessBoard, Color color) : base(chessBoard, color) { }
 
-        public override string ToString()
-        {
-            return "P";
-        }
-    }
-}
+//        public override string ToString()
+//        {
+//            return "P";
+//        }
+//    }
+//}

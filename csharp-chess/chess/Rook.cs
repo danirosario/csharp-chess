@@ -14,7 +14,7 @@ namespace chess
         private bool CanMove(Position position)
         {
             Piece p = Board.Piece(position);
-            return p != null || p.Color != this.Color;
+            return p == null || p.Color != this.Color;
         }
 
         public override bool[,] PossibleMovements()
@@ -23,7 +23,8 @@ namespace chess
 
             Position position = new Position(0, 0);
 
-            //acima
+            // acima
+            position.SetValues(Position.Row, Position.Column);
             position.SetValues(position.Row - 1, position.Column);
             while (Board.ValidePosition(position) && CanMove(position))
             {
@@ -32,10 +33,11 @@ namespace chess
                 {
                     break;
                 }
-                position.Row = position.Row - 1;
+                position.Row -= 1;
             }
 
-            //abaixo
+            // abaixo
+            position.SetValues(Position.Row, Position.Column);
             position.SetValues(position.Row + 1, position.Column);
             while (Board.ValidePosition(position) && CanMove(position))
             {
@@ -47,7 +49,8 @@ namespace chess
                 position.Row = position.Row + 1;
             }
 
-            //direita
+            // direita
+            position.SetValues(Position.Row, Position.Column);
             position.SetValues(position.Row, position.Column + 1);
             while (Board.ValidePosition(position) && CanMove(position))
             {
@@ -59,7 +62,8 @@ namespace chess
                 position.Column = position.Column + 1;
             }
 
-            //esquerda
+            // esquerda
+            position.SetValues(Position.Row, Position.Column);
             position.SetValues(position.Row, position.Column - 1);
             while (Board.ValidePosition(position) && CanMove(position))
             {
