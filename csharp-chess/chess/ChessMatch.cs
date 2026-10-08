@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using board;
 
 namespace chess
@@ -9,6 +9,8 @@ namespace chess
         public int Turn { get; private set; }
         public Color CurrentPlayer {  get; private set; }
         public bool MatchFinished { get; private set; }
+        private HashSet<Piece> pieces;
+        private HashSet<Piece> capturedPieces;
 
         public ChessMatch()
         {
@@ -16,6 +18,8 @@ namespace chess
             Turn = 1; 
             CurrentPlayer = Color.White;
             MatchFinished = false;
+            pieces = new HashSet<Piece>();
+            capturedPieces = new HashSet<Piece>();
             AddPieces();
         }
 
@@ -25,6 +29,10 @@ namespace chess
             piece.IncreaseAmountOfMoves();
             Piece capturedPiece = Board.RemovePiece(destination);
             Board.AddPiece(piece, destination);
+            if (capturedPiece != null)
+            {
+                capturedPieces.Add(capturedPiece);
+            }
         }
 
         public void TryMakeMove(Position origin, Position destination)
@@ -72,25 +80,57 @@ namespace chess
             }
         }
 
-        private void AddPieces() 
-        { 
-            Board.AddPiece(new Rook(Board, Color.White),   new ChessPosition('a', 1).ToPosition());
-            Board.AddPiece(new Knight(Board, Color.White), new ChessPosition('b', 1).ToPosition());
-            Board.AddPiece(new Bishop(Board, Color.White), new ChessPosition('c', 1).ToPosition());
-            Board.AddPiece(new Queen(Board, Color.White),  new ChessPosition('d', 1).ToPosition());
-            Board.AddPiece(new King(Board, Color.White),   new ChessPosition('e', 1).ToPosition());
-            Board.AddPiece(new Bishop(Board, Color.White), new ChessPosition('f', 1).ToPosition());
-            Board.AddPiece(new Knight(Board, Color.White), new ChessPosition('g', 1).ToPosition());
-            Board.AddPiece(new Rook(Board, Color.White),   new ChessPosition('h', 1).ToPosition());
+        public HashSet<Piece> capturedPiecesColor(Color color)
+        {
+            HashSet<Piece> aux = new HashSet<Piece>();
+            foreach (Piece piece in capturedPieces) 
+            { 
+                if(piece.Color == color)
+                {
+                    aux.Add(piece);
+                }
+            }
+            return aux;
+        }
 
-            Board.AddPiece(new Rook(Board, Color.Black),   new ChessPosition('a', 8).ToPosition());
-            Board.AddPiece(new Knight(Board, Color.Black), new ChessPosition('b', 8).ToPosition());
-            Board.AddPiece(new Bishop(Board, Color.Black), new ChessPosition('c', 8).ToPosition());
-            Board.AddPiece(new Queen(Board, Color.Black),  new ChessPosition('d', 8).ToPosition());
-            Board.AddPiece(new King(Board, Color.Black),   new ChessPosition('e', 8).ToPosition());
-            Board.AddPiece(new Bishop(Board, Color.Black), new ChessPosition('f', 8).ToPosition());
-            Board.AddPiece(new Knight(Board, Color.Black), new ChessPosition('g', 8).ToPosition());
-            Board.AddPiece(new Rook(Board, Color.Black),   new ChessPosition('h', 8).ToPosition());
+        public HashSet<Piece> piecesInPlay(Color color)
+        {
+            HashSet<Piece> aux = new HashSet<Piece>();
+            foreach (Piece piece in pieces)
+            {
+                if (piece.Color == color)
+                {
+                    aux.Add(piece);
+                }
+            }
+            aux.ExceptWith(capturedPiecesColor(color));
+            return aux;
+        }
+
+        public void AddNewPiece(char column, int row, Piece piece)
+        {
+            Board.AddPiece(piece, new ChessPosition(column, row).ToPosition());
+            pieces.Add(piece);
+        }
+        private void AddPieces() 
+        {
+            AddNewPiece('a', 1, new Rook(Board, Color.White));
+            AddNewPiece('b', 1, new Knight(Board, Color.White));
+            AddNewPiece('c', 1, new Bishop(Board, Color.White));
+            AddNewPiece('d', 1, new Queen(Board, Color.White));
+            AddNewPiece('e', 1, new King(Board, Color.White));
+            AddNewPiece('f', 1, new Bishop(Board, Color.White));
+            AddNewPiece('g', 1, new Knight(Board, Color.White));
+            AddNewPiece('h', 1, new Rook(Board, Color.White));
+
+            AddNewPiece('a', 8, new Rook(Board, Color.Black));
+            AddNewPiece('b', 8, new Knight(Board, Color.Black));
+            AddNewPiece('c', 8, new Bishop(Board, Color.Black));
+            AddNewPiece('d', 8, new Queen(Board, Color.Black));
+            AddNewPiece('e', 8, new King(Board, Color.Black));
+            AddNewPiece('f', 8, new Bishop(Board, Color.Black));
+            AddNewPiece('g', 8, new Knight(Board, Color.Black));
+            AddNewPiece('h', 8, new Rook(Board, Color.Black));
         }
     }
 }
