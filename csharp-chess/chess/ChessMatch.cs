@@ -70,6 +70,11 @@ namespace chess
                 Check = false;
             }
 
+            if (IsCheckmate(Opponent(CurrentPlayer)))
+            {
+                MatchFinished = true;
+            }
+
             Turn++;
             ChangePlayer();
         }
@@ -180,6 +185,37 @@ namespace chess
                 }
             }
             return false;
+        }
+
+        public bool IsCheckmate(Color color)
+        {
+            if (!IsCheck(color))
+            {
+                return false;
+            }
+            foreach(Piece piece in piecesInPlay(color))
+            {
+                bool[,] allPossibleMoves = piece.PossibleMovements();
+                for (int i = 0; i < Board.Rows; i++)
+                {
+                    for (int j = 0; j < Board.Columns; j++) 
+                    { 
+                        if (allPossibleMoves[i, j])
+                        {
+                            Position origin = piece.Position;
+                            Position destination = new Position(i, j);
+                            Piece capturedPiece = ExecuteMove(origin, destination);
+                            bool isCheck = IsCheck(color);
+                            ResetMove(origin, destination, capturedPiece);
+                            if (!isCheck)
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                } 
+            }
+            return true;
         }
 
         public void AddNewPiece(char column, int row, Piece piece)

@@ -1,4 +1,5 @@
 ﻿using board;
+using System.Net.Mail;
 
 
 namespace chess
@@ -11,11 +12,20 @@ namespace chess
             Console.WriteLine();
             PrintCapturedPieces(match);
             Console.WriteLine("\nTurno: " + match.Turn);
-            Console.WriteLine("Aguardando jogada: " + match.CurrentPlayer);
-            if (match.Check)
-            {
-                Console.WriteLine("XEQUE!");
 
+            if (!match.MatchFinished)
+            {
+                Console.WriteLine("Aguardando jogada: " + match.CurrentPlayer);
+                if (match.Check)
+                {
+                    Console.WriteLine("\nXEQUE!");
+
+                }
+            }
+            else
+            {
+                Console.WriteLine("\nXEQUE MATE!");
+                Console.WriteLine("Vencedor: " + match.CurrentPlayer);
             }
         }
 
