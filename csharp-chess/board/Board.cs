@@ -71,5 +71,10 @@
                 throw new BoardException("Invalid Position!");
             }
         }
+
+        internal void AddPiece(Position capturedPiece, Position destination)
+        {
+            throw new NotImplementedException();
+        }
     }
 }   

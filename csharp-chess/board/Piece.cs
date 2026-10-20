@@ -19,6 +19,11 @@
             AmountOfMoves++;
         }
 
+        public void DecreaseAmountOfMoves()
+        {
+            AmountOfMoves--;
+        }
+
         public bool HasLegalMoves()
         {
             bool[,] mat = PossibleMovements();
