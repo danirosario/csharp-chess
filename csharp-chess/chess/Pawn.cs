@@ -4,7 +4,11 @@ namespace chess
 {
     internal class Pawn : Piece
     {
-        public Pawn(Board chessBoard, Color color) : base(chessBoard, color) { }
+        private ChessMatch Match;
+        public Pawn(Board chessBoard, Color color, ChessMatch match) : base(chessBoard, color) 
+        { 
+            this.Match = match;
+        }
 
         public override string ToString()
         {
@@ -52,7 +56,27 @@ namespace chess
                 {
                     possiblePawnMoves[pos.Row, pos.Column] = true;
                 }
-            }
+
+                //#jogada especial en passant (esquerda)
+                if (Position.Row == 3)
+                {
+                    Position left = new Position(Position.Row, Position.Column - 1);
+                    if (Board.ValidePosition(left) && HasEnemy(left) && Board.Piece(left) == Match.VulnerableToEnPassant)
+                    {
+                        possiblePawnMoves[left.Row - 1, left.Column] = true;
+                    }
+                }
+
+                //# (direita)
+                if (Position.Row == 3)
+                {
+                    Position right = new Position(Position.Row, Position.Column + 1);
+                    if (Board.ValidePosition(right) && HasEnemy(right) && Board.Piece(right) == Match.VulnerableToEnPassant)
+                    {
+                        possiblePawnMoves[right.Row - 1, right.Column] = true;
+                    }
+                }
+            } 
             else 
             {
                 pos.SetValues(Position.Row + 1, Position.Column);
@@ -77,6 +101,26 @@ namespace chess
                 if (Board.ValidePosition(pos) && HasEnemy(pos))
                 {
                     possiblePawnMoves[pos.Row, pos.Column] = true;
+                }
+
+                //#jogada especial en passant (esquerda)
+                if (Position.Row == 4)
+                {
+                    Position left = new Position(Position.Row, Position.Column - 1);
+                    if (Board.ValidePosition(left) && HasEnemy(left) && Board.Piece(left) == Match.VulnerableToEnPassant)
+                    {
+                        possiblePawnMoves[left.Row + 1, left.Column] = true;
+                    }
+                }
+
+                //# (direita)
+                if (Position.Row == 4)
+                {
+                    Position right = new Position(Position.Row, Position.Column + 1);
+                    if (Board.ValidePosition(right) && HasEnemy(right) && Board.Piece(right) == Match.VulnerableToEnPassant)
+                    {
+                        possiblePawnMoves[right.Row + 1, right.Column] = true;
+                    }
                 }
             }
 
