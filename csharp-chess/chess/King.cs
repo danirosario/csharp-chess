@@ -1,10 +1,15 @@
 ﻿using board;
+using System.Text.RegularExpressions;
 
 namespace chess
 {
     internal class King : Piece
     {
-        public King(Board chessBoard, Color color) : base(chessBoard, color) { }
+        private ChessMatch Match;
+        public King(Board chessBoard, Color color, ChessMatch match) : base(chessBoard, color) 
+        {
+            this.Match = match;
+        }
 
         public override string ToString()
         {
@@ -15,6 +20,12 @@ namespace chess
         {
             Piece p = Board.Piece(position);
             return p == null || p.Color != this.Color;
+        }
+
+        private bool CastlingTest(Position position)
+        {
+            Piece p = Board.Piece(position);
+            return p != null && p is Rook && p.Color == Color && p.AmountOfMoves == 0;
         }
 
         public override bool[,] PossibleMovements()
@@ -85,6 +96,36 @@ namespace chess
             if (Board.ValidePosition(position) && CanMove(position))
             {
                 possibleKingMoves[position.Row, position.Column] = true;
+            }
+
+            //#jogada especial
+            position.SetValues(Position.Row, Position.Column);
+
+            if (AmountOfMoves == 0 && !Match.MatchFinished)
+            {
+                //roque pequeno
+                Position rookPosition1 = new Position(Position.Row, Position.Column + 3);
+                if (CastlingTest(rookPosition1))
+                {
+                    Position p1 = new Position(Position.Row, Position.Column + 1);
+                    Position p2 = new Position(Position.Row, Position.Column + 2);
+                    if (Board.Piece(p1) == null && Board.Piece(p2) == null)
+                    {
+                        possibleKingMoves[Position.Row, Position.Column + 2] = true;
+                    }
+                }
+                //roque grande
+                Position rookPosition2 = new Position(Position.Row, Position.Column - 4);
+                if (CastlingTest(rookPosition2))
+                {
+                    Position p1 = new Position(Position.Row, Position.Column - 1);
+                    Position p2 = new Position(Position.Row, Position.Column - 2);
+                    Position p3 = new Position(Position.Row, Position.Column - 3);
+                    if (Board.Piece(p1) == null && Board.Piece(p2) == null && Board.Piece(p3) == null)
+                    {
+                        possibleKingMoves[Position.Row, Position.Column - 2] = true;
+                    }
+                }
             }
 
             return possibleKingMoves;

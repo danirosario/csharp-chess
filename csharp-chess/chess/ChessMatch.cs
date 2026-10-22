@@ -12,7 +12,8 @@ namespace chess
         private HashSet<Piece> pieces;
         private HashSet<Piece> capturedPieces;
         public bool Check {  get; private set; }
-
+        private Piece VulnerableToEnPassant;
+         
         public ChessMatch()
         {
             Board = new Board(8, 8);
@@ -20,6 +21,7 @@ namespace chess
             CurrentPlayer = Color.White;
             MatchFinished = false;
             Check = false;
+            VulnerableToEnPassant = null;
             pieces = new HashSet<Piece>();
             capturedPieces = new HashSet<Piece>();
             AddPieces();
@@ -35,6 +37,27 @@ namespace chess
             {
                 capturedPieces.Add(capturedPiece);
             }
+
+            //#jogada especial roque pequeno
+            if(piece is King && destination.Column == origin.Column + 2)
+            {
+                Position originRook = new Position(origin.Row, origin.Column + 3);
+                Position destinationRook = new Position(origin.Row, origin.Column + 1);
+                Piece R = Board.RemovePiece(originRook);
+                R.IncreaseAmountOfMoves();
+                Board.AddPiece(R, destinationRook);
+            }
+
+            //#jogada especial roque grande
+            if (piece is King && destination.Column == origin.Column - 2)
+            {
+                Position originRook = new Position(origin.Row, origin.Column - 4);
+                Position destinationRook = new Position(origin.Row, origin.Column - 1);
+                Piece R = Board.RemovePiece(originRook);
+                R.IncreaseAmountOfMoves();
+                Board.AddPiece(R, destinationRook);
+            }
+
             return capturedPiece;
         }
 
@@ -49,6 +72,26 @@ namespace chess
                 capturedPieces.Remove(capturedPiece);
             }
             Board.AddPiece(p, origin);
+
+            //#jogada especial roque pequeno
+            if (p is King && destination.Column == origin.Column + 2)
+            {
+                Position originRook = new Position(origin.Row, origin.Column + 3);
+                Position destinationRook = new Position(origin.Row, origin.Column + 1);
+                Piece R = Board.RemovePiece(destinationRook);
+                R.DecreaseAmountOfMoves();
+                Board.AddPiece(R, originRook);
+            }
+
+            //#jogada especial roque grande
+            if (p is King && destination.Column == origin.Column - 2)
+            {
+                Position originRook = new Position(origin.Row, origin.Column - 4);
+                Position destinationRook = new Position(origin.Row, origin.Column - 1);
+                Piece R = Board.RemovePiece(destinationRook);
+                R.DecreaseAmountOfMoves();
+                Board.AddPiece(R, originRook);
+            }
         }
 
         public void TryMakeMove(Position origin, Position destination)
@@ -74,9 +117,25 @@ namespace chess
             {
                 MatchFinished = true;
             }
+            else
+            {
+                Turn++;
+                ChangePlayer();
+            }
 
-            Turn++;
-            ChangePlayer();
+            Piece p = Board.Piece(destination);
+            
+            //#jogada especial En Passant
+            if(p is Pawn && (destination.Row == origin.Row - 2 || destination.Row == origin.Row + 2))
+            {
+                VulnerableToEnPassant = p;
+            }
+            else
+            {
+                VulnerableToEnPassant = null;
+            }
+
+
         }
 
         public void IsValideMoveOrigin(Position position)
@@ -229,19 +288,37 @@ namespace chess
             AddNewPiece('b', 1, new Knight(Board, Color.White));
             AddNewPiece('c', 1, new Bishop(Board, Color.White));
             AddNewPiece('d', 1, new Queen(Board, Color.White));
-            AddNewPiece('e', 1, new King(Board, Color.White));
+            AddNewPiece('e', 1, new King(Board, Color.White, this));
             AddNewPiece('f', 1, new Bishop(Board, Color.White));
             AddNewPiece('g', 1, new Knight(Board, Color.White));
             AddNewPiece('h', 1, new Rook(Board, Color.White));
+
+            AddNewPiece('a', 2, new Pawn(Board, Color.White));
+            AddNewPiece('b', 2, new Pawn(Board, Color.White));
+            AddNewPiece('c', 2, new Pawn(Board, Color.White));
+            AddNewPiece('d', 2, new Pawn(Board, Color.White));
+            AddNewPiece('e', 2, new Pawn(Board, Color.White));
+            AddNewPiece('f', 2, new Pawn(Board, Color.White));
+            AddNewPiece('g', 2, new Pawn(Board, Color.White));
+            AddNewPiece('h', 2, new Pawn(Board, Color.White));
 
             AddNewPiece('a', 8, new Rook(Board, Color.Black));
             AddNewPiece('b', 8, new Knight(Board, Color.Black));
             AddNewPiece('c', 8, new Bishop(Board, Color.Black));
             AddNewPiece('d', 8, new Queen(Board, Color.Black));
-            AddNewPiece('e', 8, new King(Board, Color.Black));
+            AddNewPiece('e', 8, new King(Board, Color.Black, this));
             AddNewPiece('f', 8, new Bishop(Board, Color.Black));
             AddNewPiece('g', 8, new Knight(Board, Color.Black));
             AddNewPiece('h', 8, new Rook(Board, Color.Black));
+
+            AddNewPiece('a', 7, new Pawn(Board, Color.Black));
+            AddNewPiece('b', 7, new Pawn(Board, Color.Black));
+            AddNewPiece('c', 7, new Pawn(Board, Color.Black));
+            AddNewPiece('d', 7, new Pawn(Board, Color.Black));
+            AddNewPiece('e', 7, new Pawn(Board, Color.Black));
+            AddNewPiece('f', 7, new Pawn(Board, Color.Black));
+            AddNewPiece('g', 7, new Pawn(Board, Color.Black));
+            AddNewPiece('h', 7, new Pawn(Board, Color.Black));
         }
     }
 }
