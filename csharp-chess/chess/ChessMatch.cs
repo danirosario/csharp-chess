@@ -142,6 +142,21 @@ namespace chess
                 throw new BoardException("Você não pode se colocar em xeque!");
             }
 
+            Piece p = Board.Piece(destination);
+            //#jogadaespecial promoção
+            if (p is Pawn)
+            {
+                if ((p.Color == Color.White && destination.Row == 0) || (p.Color == Color.Black && destination.Row == 7))
+                {
+                    p = Board.RemovePiece(destination);
+                    pieces.Remove(p);
+                    Piece queen = new Queen(Board, p.Color);
+                    Board.AddPiece(queen, destination);
+                    pieces.Add(queen);
+                }
+            }
+
+
             if (IsCheck(Opponent(CurrentPlayer))) 
             {
                 Check = true;
@@ -161,8 +176,6 @@ namespace chess
                 ChangePlayer();
             }
 
-            Piece p = Board.Piece(destination);
-            
             //#jogada especial En Passant
             if(p is Pawn && (destination.Row == origin.Row - 2 || destination.Row == origin.Row + 2))
             {
